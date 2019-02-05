@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const onlineDb = require('../../config/keys');
-
+const Schema = mongoose.Schema;
 // mongoose.connect(onlineDb.mongoURI, { useNewUrlParser: true });
 mongoose.connect('mongodb://localhost/ESPN');
 
@@ -13,8 +13,7 @@ db.once('open', () => {
 });
 
 
-const feedSchema = {
-  id: { type: Number, unique: true },
+const feedSchema = new Schema({
   author: String,
   authorphoto: String,
   title: String,
@@ -22,10 +21,16 @@ const feedSchema = {
   smallphoto: String,
   newsfeed: String,
   videoclip: String,
-  timestamp: String,
-};
+  time: { type: Date, default: Date.now }
+},
+{
+  timestamps: true,
+});
 
 const FeedDB = mongoose.model('Feed', feedSchema);
 
-module.exports = db;
-module.exports = FeedDB;
+// module.exports = db;
+// module.exports = FeedDB;
+
+module.exports.db = db;
+module.exports.FeedDB = FeedDB;
